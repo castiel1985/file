@@ -34,7 +34,7 @@ ls xxx >out.txt 2>&1, 实际上可换成 ls xxx 1>out.txt 2>&1；重定向符号
 
 (8)sed -i 's/#web/web/g' a.txt  修改‘#web’变成为 ‘web’
 sed -i '$i  #This is a test' a.txt    在最后一行插入"#This is a test"
-
+sed -i '17i/abxc' a.conf   在17行后面增加 字符串
 
 -i 直接修改读取的文件内容，而不是输出到终端
 -n ：使用安静(silent)模式。在一般 sed 的用法中，所有来自 STDIN 的数据一般都会被列出到终端上。但如果加上 -n 参数后，则只有经过sed 特殊处理的那一行(或者动作)才会被列出来。

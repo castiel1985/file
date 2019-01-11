@@ -9,7 +9,7 @@ if [ $(id -u) != "0" ]; then
 	exit 1
 fi
 
-yum update
+yum update  -y
 yum -y install gcc-c++
 yum -y install make
 yum -y install perl 
@@ -75,13 +75,32 @@ useradd www
 
 
 
-sed -i 's#/scripts#$Document_root#g' /usr/local/nginx/conf/nginx.conf 
-mkdir -p /home/www/html
-chmod +w /home/www/html
-chown -R www:www /home/www/html
+#sed -i 's#/scripts#$Document_root#g' /usr/local/nginx/conf/nginx.conf 
+sed -i "s#root   html#root  /home/www#g" /usr/local/nginx/conf/nginx.conf
+sed -i "s#index  index.html index.htm/index#g	index.php" /usr/local/nginx/conf/nginx.conf
+ 
+sed -i '56i\location ~ \.php$ {' /usr/local/nginx/conf/nginx.conf
+sed -i '57i\    fastcgi_pass   127.0.0.1:9000;' /usr/local/nginx/conf/nginx.conf
+sed -i '58i\    fastcgi_index  index.php;' /usr/local/nginx/conf/nginx.conf
+sed -i '59i\    fastcgi_param  SCRIPT_FILENAME  $Document_root$fastcgi_script_name;' /usr/local/nginx/conf/nginx.conf
+sed -i '60i\    include        fastcgi_params; }' /usr/local/nginx/conf/nginx.conf
 
+
+mkdir -p /home/www
+chmod +w /home/www
+chown -R www:www /home/www
+
+
+cat <<EOF>/home/www/index.php
+<?php
+	echo  "php+nginx";
+?>
+EOF
 
 
 
 /usr/bin/nginx
 netstat -tunpl
+
+
+curl http://127.0.0.1

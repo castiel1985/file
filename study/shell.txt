@@ -117,8 +117,9 @@ centos7  设置主机名，无需启动
  - 移除属性
  = 更新参数设定
 
-(26)  echo "Write ZendGuardLoader to php.ini..."
-    cat >/usr/local/php/conf.d/002-zendguardloader.ini<<EOF
+(26)  EOF 的使用
+新建文件并追加文字内容
+cat <<EOF >a.conf
 [Zend ZendGuard Loader]
 zend_extension=/usr/local/zend/ZendGuardLoader.so
 zend_loader.enable=1
@@ -127,4 +128,22 @@ zend_loader.obfuscation_level_support=3
 zend_loader.license_path=
 EOF
 
+实现已有文件并添加内容
+cat <<EOF >>a.conf
+[Zend ZendGuard Loader]
+zend_extension=/usr/local/zend/ZendGuardLoader.so
+zend_loader.enable=1
+zend_loader.disable_licensing=0
+zend_loader.obfuscation_level_support=3
+zend_loader.license_path=
+EOF
+
+
+
+
 将配置内容写入配置文件
+
+
+
+(27) 在某一行后面增加要插入的行
+sed -i '/123/a\ppp' a.sh  就是在123的后面增加'ppp'字符串

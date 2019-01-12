@@ -13,7 +13,7 @@ yum update  -y
 yum -y install gcc-c++
 yum -y install make
 yum -y install perl 
-yum install -y unzip
+yum install -y unzip net-tools vim
 cd /usr/local/src
 
 tar zxvf pcre-8.40.tar.gz
@@ -55,7 +55,7 @@ yum -y  install gcc gcc++ libxml2-devel curl-devel libjpeg-devel libpng-devel li
 yum -y  install glibc-headers
 
 cd  /usr/local/src
-
+unzip php-7.1.3.zip
 cd  php-7.1.3
 ./configure --prefix=/usr/local/php7 --with-config-file-path=/usr/local/php7/etc --with-config-file-scan-dir=/usr/local/php7/etc/php.d --with-fpm-user=www --with-fpm-group=www --enable-fpm --disable-fileinfo --enable-mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-iconv-dir=/usr/local --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir=/usr --enable-xml --disable-rpath --enable-bcmath --enable-shmop --enable-exif --enable-sysvsem --with-curl --enable-mbregex --enable-inline-optimization --enable-mbstring  --with-gd --enable-gd-native-ttf --with-openssl --with-mhash --enable-pcntl --enable-sockets --with-xmlrpc --enable-ftp --enable-intl --with-xsl --with-gettext --enable-zip --enable-soap --disable-ipv6 --disable-debug
 make &&make install
@@ -77,17 +77,18 @@ useradd www
 
 #sed -i 's#/scripts#$Document_root#g' /usr/local/nginx/conf/nginx.conf 
 sed -i "s#root   html#root  /home/www#g" /usr/local/nginx/conf/nginx.conf
-sed -i "s#index  index.html index.htm/index#g	index.php" /usr/local/nginx/conf/nginx.conf
+sed -i "s#index  index.html index.htm#index	index.php#g" /usr/local/nginx/conf/nginx.conf
  
-sed -i '56i\location ~ \.php$ {' /usr/local/nginx/conf/nginx.conf
+sed -i '56i\location ~ \\.php$ {' /usr/local/nginx/conf/nginx.conf
 sed -i '57i\    fastcgi_pass   127.0.0.1:9000;' /usr/local/nginx/conf/nginx.conf
 sed -i '58i\    fastcgi_index  index.php;' /usr/local/nginx/conf/nginx.conf
-sed -i '59i\    fastcgi_param  SCRIPT_FILENAME  $Document_root$fastcgi_script_name;' /usr/local/nginx/conf/nginx.conf
+sed -i '59i\    fastcgi_param  SCRIPT_FILENAME  /home/www/$fastcgi_script_name;' /usr/local/nginx/conf/nginx.conf
+#sed -i '59i#	fastcgi_param  SCRIPT_FILENAME  /home/www$fastcgi_script_name;'
 sed -i '60i\    include        fastcgi_params; }' /usr/local/nginx/conf/nginx.conf
 
 
 mkdir -p /home/www
-chmod +w /home/www
+chmod 777 /home/www
 chown -R www:www /home/www
 
 
@@ -97,10 +98,11 @@ cat <<EOF>/home/www/index.php
 ?>
 EOF
 
-
+chmod 777 index.php
 
 /usr/bin/nginx
 netstat -tunpl
 
+echo '*******'
 
 curl http://127.0.0.1

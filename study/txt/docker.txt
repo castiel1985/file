@@ -1,0 +1,62 @@
+保存镜像
+# docker save -o rocketmq.tar rocketmq
+
+载入镜像
+docker load --input rocketmq.tar 或 docker load < rocketmq.tar
+
+删除镜像
+docker rmi -f image_id ##-f：表示强制删除镜像；image_id：镜像id
+
+
+
+
+
+
+docker ps                              列出运行的容器
+
+docker images              列出本地镜像
+
+docker rmi image-name      删除本地镜像
+
+docker mi -f $(docker images) 强制删除所有镜像
+
+docker rm container-「name,id」删除容器
+
+docker rm -f $(docker ps -a -q)删除所有容器
+
+docker stop container-id        停止容器
+
+docker kill container-id            强制停止容器
+
+docker start container-id        启动
+
+docker restart container-id    重启
+
+docker attach container-id     进入容器
+
+
+
+运行docker镜像，本地没有从Docker Hub拉取  docker run hello-world
+
+
+docker run -d -p 8888:80 --name webserver nginx      -d 后台运行 -p 宿主机端口：容器端口
+ 
+安装docker
+(1) sudo apt-get remove docker docker-engine docker.io
+(2) curl -fsSL get.docker.com -o get-docker.sh
+(3) sudo sh get-docker.sh
+
+
+
+
+进入容器：
+sudo docker exec -it 775c7c9ee1e1 /bin/bash
+
+
+
+
+
+
+
+
+sudo nvidia-docker run  -it  -v /opt/vm:/opt ufoym/deepo

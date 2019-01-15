@@ -1,0 +1,34 @@
+(1)手动编译，必须包括 zlib,openssl, pcre三大组件 ，并需要 perl5
+
+(2)另外编译必须包括：gcc和make, 
+
+(3)./configure --prefix=/usr/local/nginx  --with-http_gzip_static_module  --with-pcre=/usr/local/src/pcre  --with-opensssl=/usr/local/src/openssl --with-zlib=/usr/local/src/zlib
+
+(4)make &&make install
+
+(5)ln -sf  /usr/local/nginx/sbin/nginx 	/usr/bin/nginx    建立软连接
+
+
+
+nginx -t 进行可行性测试 
+
+
+
+在nginx.conf中重要修改如下：
+
+指定 root  /home/www
+指定 index  index.php
+修改  fastcgi_param  为   /home/www$fastcgi_script_name  即将指定的解析目录指向代码所在地址
+
+
+
+权限开放：
+/home/www	chown  -R www:www  必须将拥有折改为php和nginx都可以访问的权限
+
+
+
+
+
+
+
+***************************************************************************************************************************************************************************************

@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)https://www.cnblogs.com/ilanni/p/4945830.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="origin">
+    <title>烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园</title>
+<meta property="og:description" content="本文由ilanniweb提供友情赞助，首发于烂泥行天下想要获得更多的文章，可以关注我的微信ilanniweb。今天我们来介绍下有关haproxy匹配手机的一些规则配置。一、业务需要现在根据业务的实际需">
+    <link type="text/css" rel="stylesheet" href="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/bundle-darkgreentrip.css">
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/bundle-darkgreentrip-mobile.css">
+    <link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/ilanni/rss">
+    <link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/ilanni/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/ilanni/wlwmanifest.xml">
+    <script src="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/osd.js"></script><script src="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/amp4ads-host-v0.js"></script><script src="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/pubads_impl_rendering_287.js"></script><script async="" src="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/analytics.js"></script><script src="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/jquery-2.2.0.min.js"></script>
+    <script>var currentBlogId=126905;var currentBlogApp='ilanni',cb_enable_mathjax=false;var isLogined=false;</script>
+    <script src="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/blog-common.js" type="text/javascript"></script>
+<link rel="preload" href="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/f.txt" as="script"><script type="text/javascript" src="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/f.txt"></script><script src="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/pubads_impl_287.js" async=""></script><link rel="prefetch" href="https://tpc.googlesyndication.com/safeframe/1-0-31/html/container.html"></head>
+<body>
+<a name="top"></a>
+
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/ilanni/"><img id="blogLogo" src="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/logo.gif" alt="返回主页"></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/ilanni/">烂泥行天下</a></h1>
+<h2>烂泥：起于尘土，翱翔于九天！！！
+烂泥行天下http://www.ilanni.com㊣秀依林枫http://xiuylf.taobao.com</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/ilanni/">首页</a></li>
+<li><a id="blog_nav_newpost" class="menu" rel="nofollow" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/%E7%83%82%E6%B3%A5%E8%A1%8C%E5%A4%A9%E4%B8%8B">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/ilanni/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/ilanni/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 135&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 32</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+        <div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/ilanni/p/4945830.html">烂泥：haproxy学习之手机规则匹配</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p><span style="font-family: 微软雅黑; color: #ff0000;"><strong>本文由ilanniweb提供友情赞助，首发于</strong></span><a href="http://www.ilanni.com/" target="_blank"><strong><span style="color: #ff0000;">烂泥行天下</span></strong></a></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">想要获得更多的文章，可以关注我的微信ilanniweb。</span></p>
+<p><span style="font-family: 微软雅黑;">今天我们来介绍下有关haproxy匹配手机的一些规则配置。</span></p>
+<h1><span style="font-size: 18px;"><strong><span style="font-family: 微软雅黑;"><span>一、业务需要</span></span></strong></span></h1>
+<p><span style="font-family: 微软雅黑;">现在根据业务的实际需要，有以下几种不同的需求。如下：</span></p>
+<h2><span style="font-family: 微软雅黑; font-size: 18px;"><strong>1.1 </strong><strong>转发所有手机请求</strong></span></h2>
+<p><span style="font-family: 微软雅黑;">所有通过手机端访问http.ilanni.com域名的话，全部转发到http://www.ilanni.com这个地址，而PC端不受此限制。</span></p>
+<h2><span style="font-family: 微软雅黑; font-size: 18px;"><strong>1.2 </strong><strong>根据url进行转发</strong></span></h2>
+<p><span style="font-family: 微软雅黑;">如果手机端请求http.ilanni.com这个域名的url中，以docs或者manager这两个关键词开头的话，把该请求转发到后端的服务器，而PC端不受此限制。</span></p>
+<p><span style="font-family: 微软雅黑;">也就是说手机端访问具体的url地址的话，可以正常访问。如果是直接访问http.ilanni.com域名的话，直接把该请求转发到http://www.ilanni.com这个地址。</span></p>
+<h1><span style="font-size: 18px;"><strong><span style="font-family: 微软雅黑;"><span>二、haproxy配置</span></span></strong></span></h1>
+<p><span style="font-family: 微软雅黑;">下面根据不同的业务需求进行配置haproxy，如下。</span></p>
+<h2><span style="font-family: 微软雅黑; font-size: 18px;"><strong>2.1 </strong><strong>转发所有手机请求配置</strong></span></h2>
+<p><span style="font-family: 微软雅黑;">要把所有的手机端请求转到www.ilanni.com这个地址，需要我们首先把访问的终端匹配出来，haproxy可以通过hdr_sub(user-agent)这个参数把手机端匹配出来。</span></p>
+<p><span style="font-family: 微软雅黑;">手机端匹配出来后，我们就可以定义相应的规则，把手机端的请求转发到www.ilanni.com这个地址了。</span></p>
+<p><span style="font-family: 微软雅黑;">haproxy具体配置文件如下：</span></p>
+<p><span style="font-family: 微软雅黑;">global</span></p>
+<p><span style="font-family: 微软雅黑;">log 127.0.0.1 local0</span></p>
+<p><span style="font-family: 微软雅黑;">log 127.0.0.1 local1 notice</span></p>
+<p><span style="font-family: 微软雅黑;">maxconn 4096</span></p>
+<p><span style="font-family: 微软雅黑;">uid 188</span></p>
+<p><span style="font-family: 微软雅黑;">gid 188</span></p>
+<p><span style="font-family: 微软雅黑;">daemon</span></p>
+<p><span style="font-family: 微软雅黑;">tune.ssl.default-dh-param 2048</span></p>
+<p><span style="font-family: 微软雅黑;">defaults</span></p>
+<p><span style="font-family: 微软雅黑;">log global</span></p>
+<p><span style="font-family: 微软雅黑;">mode http</span></p>
+<p><span style="font-family: 微软雅黑;">option httplog</span></p>
+<p><span style="font-family: 微软雅黑;">option dontlognull</span></p>
+<p><span style="font-family: 微软雅黑;">option http-server-close</span></p>
+<p><span style="font-family: 微软雅黑;">option forwardfor except 127.0.0.1</span></p>
+<p><span style="font-family: 微软雅黑;">option redispatch</span></p>
+<p><span style="font-family: 微软雅黑;">retries 3</span></p>
+<p><span style="font-family: 微软雅黑;">option redispatch</span></p>
+<p><span style="font-family: 微软雅黑;">maxconn 2000</span></p>
+<p><span style="font-family: 微软雅黑;">timeout http-request 10s</span></p>
+<p><span style="font-family: 微软雅黑;">timeout queue 1m</span></p>
+<p><span style="font-family: 微软雅黑;">timeout connect 10s</span></p>
+<p><span style="font-family: 微软雅黑;">timeout client 1m</span></p>
+<p><span style="font-family: 微软雅黑;">timeout server 1m</span></p>
+<p><span style="font-family: 微软雅黑;">timeout http-keep-alive 10s</span></p>
+<p><span style="font-family: 微软雅黑;">timeout check 10s</span></p>
+<p><span style="font-family: 微软雅黑;">maxconn 3000</span></p>
+<p><span style="font-family: 微软雅黑;">listen admin_stats</span></p>
+<p><span style="font-family: 微软雅黑;">bind 0.0.0.0:1080</span></p>
+<p><span style="font-family: 微软雅黑;">mode http</span></p>
+<p><span style="font-family: 微软雅黑;">option httplog</span></p>
+<p><span style="font-family: 微软雅黑;">maxconn 10</span></p>
+<p><span style="font-family: 微软雅黑;">stats refresh 30s</span></p>
+<p><span style="font-family: 微软雅黑;">stats uri /stats</span></p>
+<p><span style="font-family: 微软雅黑;">stats auth admin:admin</span></p>
+<p><span style="font-family: 微软雅黑;">stats hide-version</span></p>
+<p><span style="font-family: 微软雅黑;">frontend weblb</span></p>
+<p><span style="font-family: 微软雅黑;">bind *:80</span></p>
+<p><span style="font-family: 微软雅黑;">acl is_http hdr_beg(host) http.ilanni.com</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">acl ua hdr_sub(user-agent) -i android iphone</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">redirect prefix http://www.ilanni.com if ua</span></p>
+<p><span style="font-family: 微软雅黑;">use_backend httpserver if is_http</span></p>
+<p><span style="font-family: 微软雅黑;">backend httpserver</span></p>
+<p><span style="font-family: 微软雅黑;">balance source</span></p>
+<p><span style="font-family: 微软雅黑;">server web1 127.0.0.1:8080 maxconn 1024 weight 3 check inter 2000 rise 2 fall 3</span></p>
+<p><span style="font-family: 微软雅黑;">在以上配置文件中，有以下两行需要注意：</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">acl ua hdr_sub(user-agent) -i android iphone</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">redirect prefix http://www.ilanni.com if ua</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">这两行，第一行是第一个ua规则，该规则是判断是否是手机端。</span></p>
+<p><strong><span style="font-family: 微软雅黑; color: #ff0000;">注意：在此手机端，我们只匹配了安卓手机和iphone。</span></strong></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">第二行是跳转规则，如果匹配是手机端的话，那么直接跳转到http://www.ilanni.com这个地址。</span></p>
+<p><span style="font-family: 微软雅黑;">如果是PC端的话，默认跳转到httpserver这个后端服务器组。</span></p>
+<p><span style="font-family: 微软雅黑;">以上配置是一台服务器对外只提供一个域名访问的请求，如果有两个域名的话，就要进行如下配置：</span></p>
+<p><span style="font-family: 微软雅黑;">global</span></p>
+<p><span style="font-family: 微软雅黑;">log 127.0.0.1 local0</span></p>
+<p><span style="font-family: 微软雅黑;">log 127.0.0.1 local1 notice</span></p>
+<p><span style="font-family: 微软雅黑;">maxconn 4096</span></p>
+<p><span style="font-family: 微软雅黑;">uid 188</span></p>
+<p><span style="font-family: 微软雅黑;">gid 188</span></p>
+<p><span style="font-family: 微软雅黑;">daemon</span></p>
+<p><span style="font-family: 微软雅黑;">tune.ssl.default-dh-param 2048</span></p>
+<p><span style="font-family: 微软雅黑;">defaults</span></p>
+<p><span style="font-family: 微软雅黑;">log global</span></p>
+<p><span style="font-family: 微软雅黑;">mode http</span></p>
+<p><span style="font-family: 微软雅黑;">option httplog</span></p>
+<p><span style="font-family: 微软雅黑;">option dontlognull</span></p>
+<p><span style="font-family: 微软雅黑;">option http-server-close</span></p>
+<p><span style="font-family: 微软雅黑;">option forwardfor except 127.0.0.1</span></p>
+<p><span style="font-family: 微软雅黑;">option redispatch</span></p>
+<p><span style="font-family: 微软雅黑;">retries 3</span></p>
+<p><span style="font-family: 微软雅黑;">option redispatch</span></p>
+<p><span style="font-family: 微软雅黑;">maxconn 2000</span></p>
+<p><span style="font-family: 微软雅黑;">timeout http-request 10s</span></p>
+<p><span style="font-family: 微软雅黑;">timeout queue 1m</span></p>
+<p><span style="font-family: 微软雅黑;">timeout connect 10s</span></p>
+<p><span style="font-family: 微软雅黑;">timeout client 1m</span></p>
+<p><span style="font-family: 微软雅黑;">timeout server 1m</span></p>
+<p><span style="font-family: 微软雅黑;">timeout http-keep-alive 10s</span></p>
+<p><span style="font-family: 微软雅黑;">timeout check 10s</span></p>
+<p><span style="font-family: 微软雅黑;">maxconn 3000</span></p>
+<p><span style="font-family: 微软雅黑;">listen admin_stats</span></p>
+<p><span style="font-family: 微软雅黑;">bind 0.0.0.0:1080</span></p>
+<p><span style="font-family: 微软雅黑;">mode http</span></p>
+<p><span style="font-family: 微软雅黑;">option httplog</span></p>
+<p><span style="font-family: 微软雅黑;">maxconn 10</span></p>
+<p><span style="font-family: 微软雅黑;">stats refresh 30s</span></p>
+<p><span style="font-family: 微软雅黑;">stats uri /stats</span></p>
+<p><span style="font-family: 微软雅黑;">stats auth admin:admin</span></p>
+<p><span style="font-family: 微软雅黑;">stats hide-version</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">frontend weblb</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">bind *:80</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">acl is_http hdr_beg(host) http.ilanni.com</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">acl is_haproxy hdr_beg(host) haproxy.ilanni.com</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">acl ua hdr_sub(user-agent) -i android iphone</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">redirect prefix http://www.ilanni.com if ua !is_haproxy</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">use_backend haproxyserver if ua is_haproxy</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">use_backend haproxyserver if is_haproxy</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">use_backend httpserver if is_http</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">backend httpserver</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">balance source</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">server web1 127.0.0.1:8080 maxconn 1024 weight 3 check inter 2000 rise 2 fall 3</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">backend haproxyserver</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">balance source</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">server web1 127.0.0.1:7070 maxconn 1024 weight 3 check inter 2000 rise 2 fall 3</span></p>
+<h2><span style="font-family: 微软雅黑; font-size: 18px;"><strong>2.2 </strong><strong>测试转发所有手机请求</strong></span></h2>
+<p><span style="font-family: 微软雅黑;">现在我们来测试该跳转功能，如下：</span></p>
+<p><a href="http://images2015.cnblogs.com/blog/62984/201511/62984-20151107181929571-896780480.png"><span style="font-family: 微软雅黑;"><img style="background-image: none; padding-top: 0px; padding-left: 0px; margin: 0px; display: inline; padding-right: 0px; border-width: 0px;" title="clip_image001" src="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/62984-20151107181930086-2074498482.png" alt="clip_image001" width="724" height="1284" border="0"></span></a></p>
+<p><span style="font-family: 微软雅黑;">通过测试你会发现，在手机浏览器中输入http.ilanni.com会自动跳转到http://www.ilanni.com这个地址。</span></p>
+<h2><span style="font-family: 微软雅黑; font-size: 18px;"><strong>2.3 </strong><strong>根据url进行转发配置</strong></span></h2>
+<p><span style="font-family: 微软雅黑;">根据手机端请求的url进行转发的话，首先也是需要匹配出手机端，然后定义url路径规则。最后结合手机端和url路径规则，进行跳转。</span></p>
+<p><span style="font-family: 微软雅黑;">haproxy具体配置文件，如下：</span></p>
+<p><span style="font-family: 微软雅黑;">global</span></p>
+<p><span style="font-family: 微软雅黑;">log 127.0.0.1 local0</span></p>
+<p><span style="font-family: 微软雅黑;">log 127.0.0.1 local1 notice</span></p>
+<p><span style="font-family: 微软雅黑;">maxconn 4096</span></p>
+<p><span style="font-family: 微软雅黑;">uid 188</span></p>
+<p><span style="font-family: 微软雅黑;">gid 188</span></p>
+<p><span style="font-family: 微软雅黑;">daemon</span></p>
+<p><span style="font-family: 微软雅黑;">tune.ssl.default-dh-param 2048</span></p>
+<p><span style="font-family: 微软雅黑;">defaults</span></p>
+<p><span style="font-family: 微软雅黑;">log global</span></p>
+<p><span style="font-family: 微软雅黑;">mode http</span></p>
+<p><span style="font-family: 微软雅黑;">option httplog</span></p>
+<p><span style="font-family: 微软雅黑;">option dontlognull</span></p>
+<p><span style="font-family: 微软雅黑;">option http-server-close</span></p>
+<p><span style="font-family: 微软雅黑;">option forwardfor except 127.0.0.1</span></p>
+<p><span style="font-family: 微软雅黑;">option redispatch</span></p>
+<p><span style="font-family: 微软雅黑;">retries 3</span></p>
+<p><span style="font-family: 微软雅黑;">option redispatch</span></p>
+<p><span style="font-family: 微软雅黑;">maxconn 2000</span></p>
+<p><span style="font-family: 微软雅黑;">timeout http-request 10s</span></p>
+<p><span style="font-family: 微软雅黑;">timeout queue 1m</span></p>
+<p><span style="font-family: 微软雅黑;">timeout connect 10s</span></p>
+<p><span style="font-family: 微软雅黑;">timeout client 1m</span></p>
+<p><span style="font-family: 微软雅黑;">timeout server 1m</span></p>
+<p><span style="font-family: 微软雅黑;">timeout http-keep-alive 10s</span></p>
+<p><span style="font-family: 微软雅黑;">timeout check 10s</span></p>
+<p><span style="font-family: 微软雅黑;">maxconn 3000</span></p>
+<p><span style="font-family: 微软雅黑;">listen admin_stats</span></p>
+<p><span style="font-family: 微软雅黑;">bind 0.0.0.0:1080</span></p>
+<p><span style="font-family: 微软雅黑;">mode http</span></p>
+<p><span style="font-family: 微软雅黑;">option httplog</span></p>
+<p><span style="font-family: 微软雅黑;">maxconn 10</span></p>
+<p><span style="font-family: 微软雅黑;">stats refresh 30s</span></p>
+<p><span style="font-family: 微软雅黑;">stats uri /stats</span></p>
+<p><span style="font-family: 微软雅黑;">stats auth admin:admin</span></p>
+<p><span style="font-family: 微软雅黑;">stats hide-version</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">frontend weblb</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">bind *:80</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">acl is_http hdr_beg(host) http.ilanni.com</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">acl is_docs url_beg /docs /manager</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">acl ua hdr_sub(user-agent) -i android iphone</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">redirect prefix http://www.ilanni.com if ua !is_docs</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">use_backend httpserver if ua is_docs</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">use_backend httpserver if is_http</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">backend httpserver</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">balance source</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">server web1 127.0.0.1:8080 maxconn 1024 weight 3 check inter 2000 rise 2 fall 3</span></p>
+<p><span style="font-family: 微软雅黑;">在上述配置文件中，需要以下几行解释下。</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">acl is_docs url_beg /docs /manager</span></p>
+<p><span style="font-family: 微软雅黑;">定义一个is_docs规则。如果url以/docs或者/manager开头的，则全部属于该规则。</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">acl ua hdr_sub(user-agent) -i android iphone</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">redirect prefix http://www.ilanni.com if ua !is_docs</span></p>
+<p><span style="font-family: 微软雅黑;">这两行首先是匹配出手机端，然后如果是手机端访问，并且访问的不是is_docs规则的话，则直接跳转到http://www.ilanni.com这个地址。</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">use_backend httpserver if ua is_docs</span></p>
+<p><span style="font-family: 微软雅黑;">这条命令是，如果是手机端访问，并且访问的是is_docs规则的话，则直接跳转到httpserver这个后端服务器组。</span></p>
+<p><span style="font-family: 微软雅黑;">如果是PC端的话，默认跳转到httpserver这个后端服务器组。</span></p>
+<h2><span style="font-family: 微软雅黑; font-size: 18px;"><strong>2.4 </strong><strong>测试根据url进行转发</strong></span></h2>
+<p><span style="font-family: 微软雅黑;">根据url转发配置完毕后，我们现在来测试。如下：</span></p>
+<p><a href="http://images2015.cnblogs.com/blog/62984/201511/62984-20151107181930774-1186123087.png"><span style="font-family: 微软雅黑;"><img style="background-image: none; padding-top: 0px; padding-left: 0px; margin: 0px; display: inline; padding-right: 0px; border-width: 0px;" title="clip_image002" src="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/62984-20151107181931571-1115148226.png" alt="clip_image002" width="724" height="1284" border="0"></span></a></p>
+<p><span style="font-family: 微软雅黑;">通过上图，我们可以看到手机端访问http://http.ilanni.com/docs/这个连接的话，是可以直接访问的。</span></p>
+<h1><span style="font-size: 18px;"><strong><span style="font-family: 微软雅黑;"><span>三、其他haproxy配置</span></span></strong></span></h1>
+<p><span style="font-family: 微软雅黑;">在前面我们讲解了有关手机的相关配置，在实际的生产环境中，有时候我们会碰到一些奇奇怪怪的要求。</span></p>
+<p><span style="font-family: 微软雅黑;">要求所有手机端访问的http.ilanni.com，转到指定的页面。</span></p>
+<p><span style="font-family: 微软雅黑;">haproxy主要配置文件如下：</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">frontend weblb</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">bind *:80</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">acl is_http hdr_beg(host) http.ilanni.com</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">acl ua hdr_sub(user-agent) -i android iphone</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">redirect prefix http://www.ilanni.com/?p=10624 if ua</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">use_backend httpserver if is_http</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">backend httpserver</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">balance source</span></p>
+<p><span style="font-family: 微软雅黑; color: #ff0000;">server web1 127.0.0.1:8080 maxconn 1024 weight 3 check inter 2000 rise 2 fall 3</span></p>
+<p><span style="font-family: 微软雅黑;">以上配置是所有手机端访问的，都跳转到http://www.ilanni.com/?p=10624这个页面。测试如下：</span></p>
+<p><a href="http://images2015.cnblogs.com/blog/62984/201511/62984-20151107181932758-789918748.png"><span style="font-family: 微软雅黑;"><img style="background-image: none; padding-top: 0px; padding-left: 0px; margin: 0px; display: inline; padding-right: 0px; border-width: 0px;" title="clip_image003" src="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/62984-20151107181933211-798627760.png" alt="clip_image003" width="724" height="1284" border="0"></span></a></p>
+<p><span style="font-family: 微软雅黑;">通过上图，我们可以看到手机端的访问确实跳转到了我们指定的页面。</span></p>
+<p><span style="font-family: 微软雅黑;">类似这样的要求，一般会在升级公司相关业务时提出，对公司的公网IP可以正常，但是外部访问时，跳转到指定的维护页面。</span></p>
+<p><span style="font-family: 微软雅黑;">这个我们可以根据源IP地址进行匹配，在此就不进行详细的讲解了。</span></p>
+<p><a href="http://images2015.cnblogs.com/blog/62984/201511/62984-20151107181934008-1599156595.png"><span style="font-family: 微软雅黑;"><img style="background-image: none; padding-top: 0px; padding-left: 0px; margin: 0px; display: inline; padding-right: 0px; border-width: 0px;" title="clip_image004" src="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/62984-20151107181934961-277196983.png" alt="clip_image004" width="724" height="1284" border="0"></span></a></p>
+<p><span style="font-family: 微软雅黑;">通过上图，我们可以看到手机端访问http://http.ilanni.com/manager/status这个连接的话，是可以直接访问的。</span></p>
+<p><a href="http://images2015.cnblogs.com/blog/62984/201511/62984-20151107181935555-569944370.png"><span style="font-family: 微软雅黑;"><img style="background-image: none; padding-top: 0px; padding-left: 0px; display: inline; padding-right: 0px; border-width: 0px;" title="clip_image001[1]" src="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/62984-20151107181936102-1321996289.png" alt="clip_image001[1]" width="724" height="1284" border="0"></span></a></p>
+<p><span style="font-family: 微软雅黑;">通过上图，我们可以看到如果手机端访问的不是is_docs这个规则中定义的url话，则会全部跳转到http://www.ilanni.com这个地址的。</span></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory">分类: <a href="https://www.cnblogs.com/ilanni/category/603851.html" target="_blank">Linux</a></div>
+<div id="EntryTag">标签: <a href="https://www.cnblogs.com/ilanni/tag/%E7%83%82%E6%B3%A5/">烂泥</a>, <a href="https://www.cnblogs.com/ilanni/tag/haproxy/">haproxy</a>, <a href="https://www.cnblogs.com/ilanni/tag/%E5%8C%B9%E9%85%8D/">匹配</a>, <a href="https://www.cnblogs.com/ilanni/tag/%E6%89%8B%E6%9C%BA/">手机</a>, <a href="https://www.cnblogs.com/ilanni/tag/%E8%A7%84%E5%88%99/">规则</a></div>
+<div id="blog_post_info"><div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(4945830,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+            <a id="green_channel_follow" onclick="follow(&#39;b60e0742-ba34-de11-9510-001cf0cd104b&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/ilanni/" target="_blank"><img src="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/u62984.jpg" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/ilanni/">烂泥行天下</a><br>
+            <a href="http://home.cnblogs.com/u/ilanni/followees">关注 - 7</a><br>
+            <a href="http://home.cnblogs.com/u/ilanni/followers">粉丝 - 76</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;b60e0742-ba34-de11-9510-001cf0cd104b&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(4945830,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(4945830,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="https://www.cnblogs.com/ilanni/p/4945765.html" class="p_n_p_prefix">« </a> 上一篇：<a href="https://www.cnblogs.com/ilanni/p/4945765.html" title="发布于2015-11-07 17:35">烂泥：haproxy与nginx、zabbix集成</a><br><a href="https://www.cnblogs.com/ilanni/p/5153035.html" class="p_n_p_prefix">» </a> 下一篇：<a href="https://www.cnblogs.com/ilanni/p/5153035.html" title="发布于2016-01-23 11:41">烂泥：学习tomcat之通过shell批量管理多个tomcat</a><br></div>
+</div>
+
+
+		</div>
+		<div class="postDesc">posted @ <span id="post-date">2015-11-07 18:20</span> <a href="https://www.cnblogs.com/ilanni/">烂泥行天下</a> 阅读(<span id="post_view_count">226</span>) 评论(<span id="post_comment_count">0</span>)  <a href="https://i.cnblogs.com/EditPosts.aspx?postid=4945830" rel="nofollow">编辑</a> <a href="https://www.cnblogs.com/ilanni/p/4945830.html#" onclick="AddToWz(4945830);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=126905,cb_entryId=4945830,cb_blogApp=currentBlogApp,cb_blogUserGuid='b60e0742-ba34-de11-9510-001cf0cd104b',cb_entryCreatedDate='2015/11/7 18:20:00';loadViewCount(cb_entryId);var cb_postType=1;var isMarkdown=false;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/ilanni/p/4945830.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/ilanni/p/4945830.html#top">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login(&#39;commentform&#39;);">登录</a> 或 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，<a href="http://www.cnblogs.com/">访问</a>网站首页。</div></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="ad_t2"><a href="http://www.ucancode.com/index.htm" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-工控&#39;)">【推荐】超50万VC++源码: 大型组态工控、电力仿真CAD与GIS源码库！</a><br></div>
+<div id="opt_under_post"></div>
+<script async="async" src="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/gpt.js"></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+<script>
+  googletag.cmd.push(function() {
+        googletag.defineSlot('/1090369/C1', [300, 250], 'div-gpt-ad-1546353474406-0').addService(googletag.pubads());
+        googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+  });
+</script>
+<div id="cnblogs_c1" class="c_ad_block">
+<div id="div-gpt-ad-1546353474406-0" style="height:250px; width:300px;" data-google-query-id="CIjl5Pa1798CFReNlgodn-8IbA">
+<script>
+if(canShowAdsense()) {
+    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1546353474406-0'); });
+}
+</script>
+<div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C1_0" width="300" height="250" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" style="border: 0px; vertical-align: bottom;" data-google-container-id="1" data-load-complete="true" src="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/saved_resource.html"></iframe></div></div>
+</div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>相关博文：</b><br>·  <a href="https://www.cnblogs.com/linjiqin/archive/2011/02/26/1966065.html" target="_blank" onclick="clickRecomItmem(1966065,&#39;FP1Nvrno3DXjhYaQrTX1uC7SRgX1oUFyGJSJyvBehZn93rwhyZZZclYZPY5VQmDrgIfZ4nkesw1HLORUyhVnbFxiwgj5QS3mienowncp69L4/9kz9ZWRPcmuTu4tTugK1ulgQNDMMuaHEkstWVMmsU1gUXq9NBXcybrH1cpvetyDz9jxAiE6WBqH3Pf+j81s&#39;)">Android之手机闹钟</a><br>·  <a href="https://www.cnblogs.com/ilanni/p/4945765.html" target="_blank" onclick="clickRecomItmem(4945765,&#39;fuEA+zvg7XgnzfQQqt9hEtlCQYmhMOG/zRmjgAdrxbNbu0/4r2AhHkTQuaUj1EZLvrQiLuEEFO2gCfqRz70agU0vm55s2dMA3Pph48w1MIPlTGzEg7N+KIcXxotzSeBG8Ddma41Ltd7UgFv4VyGqzsDjYyp/OcgANS7O61kP0GeaR8U=&#39;)">烂泥：haproxy与nginx、zabbix集成</a><br>·  <a href="https://www.cnblogs.com/ilanni/p/4762762.html" target="_blank" onclick="clickRecomItmem(4762762,&#39;dRIku3PlorCQgO+J8qUQyi3YbmwrpSjyfXIdkm/MS//bRQrxx/zhqzRTufgkX5YWq0WscO2wdwYF6FTPZH0xA5J6hSmYf7TdJrJrPVgJqqKn5l0FvuTxD7G54I9LdYmLdUePWXseYCMBBE/4/zPZucrLTX0gNqC6bzFhZ64pv9n+XFs=&#39;)">烂泥：高负载均衡学习haproxy之TCP应用</a><br>·  <a href="https://www.cnblogs.com/qsl568/archive/2012/12/25/2832948.html" target="_blank" onclick="clickRecomItmem(2832948,&#39;saOOmj37GuLLG+jnD9NRE4eyK3uOSgJvg2aic3L1sDfFVaB4h70TTIQTPVG2gHKhnm7/LPcEeN3SNUDfs26TxadBNOxx2L/saEsnnS8TK4YTMpIKEntWSHpIcR8mRBuxe9bs+36iBwjq2hZsNboWMxwFnLapMFUTfcwjBh/Dzkm2Xto=&#39;)">手机号码匹配规则</a><br>·  <a href="https://www.cnblogs.com/tfy1332/p/3656119.html" target="_blank" onclick="clickRecomItmem(3656119,&#39;dw8B4sRPAy2hw5dS1heXl7djJl6Q78qggCdPMZerUMxia4NjfRy39wqwsJvjgTNesIS9U5WOzFEba/3qVg+eiJgzQJabLlTj9vhlev5c22p574sO/MgicoJ6WdRaDXQ54aDOd9sL+ZnNuqZQj3To+qlyd08Lzs10unQHt6wiXRVeOPWiLLFKiGljHsB/pg2g&#39;)">android之手机震动Vibrate</a><br></div></div>
+<div id="cnblogs_c2" class="c_ad_block">
+    <div id="div-gpt-ad-1539008685004-0" style="height:60px; width:468px;" data-google-query-id="CPrR4va1798CFQsylgodw8gPqQ">
+    <script>
+    if(canShowAdsense()) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    <div id="google_ads_iframe_/1090369/C2_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C2_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C2_0" width="468" height="60" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" style="border: 0px; vertical-align: bottom;" data-google-container-id="2" data-load-complete="true" src="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/saved_resource(1).html"></iframe></div></div>
+</div>
+<div id="under_post_kb"><div class="itnews c_ad_block"><b>最新新闻</b>：<br> ·  <a href="https://news.cnblogs.com/n/617382/" target="_blank">抖音“多闪”下载地址瞬间遭微信封杀 现仅安卓用户可下载</a><br> ·  <a href="https://news.cnblogs.com/n/617379/" target="_blank">安卓用户终于要有自己的“iMessage”了</a><br> ·  <a href="https://news.cnblogs.com/n/617378/" target="_blank">世道变坏 从雷军生气开始</a><br> ·  <a href="https://news.cnblogs.com/n/617376/" target="_blank">哈啰出行执行总裁：目前估值50亿美元 短期无融资计划</a><br> ·  <a href="https://news.cnblogs.com/n/617374/" target="_blank">这个地方可能比火星和月球，更适合太空殖民</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+ if(enablePostBottom()) {
+    codeHighlight();
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);  
+}
+</script>
+</div>
+
+    
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news">烂泥：起于尘土，翱翔于九天！<div id="profile_block">昵称：<a href="https://home.cnblogs.com/u/ilanni/">烂泥行天下</a><br>园龄：<a href="https://home.cnblogs.com/u/ilanni/" title="入园时间：2009-04-29">9年8个月</a><br>粉丝：<a href="https://home.cnblogs.com/u/ilanni/followers/">76</a><br>关注：<a href="https://home.cnblogs.com/u/ilanni/followees/">7</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="follow(&#39;b60e0742-ba34-de11-9510-001cf0cd104b&#39;)">+加关注</a></div><script>getFollowStatus('b60e0742-ba34-de11-9510-001cf0cd104b')</script></div></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style=""><table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar">
+	<tbody><tr><td colspan="7"><table class="CalTitle" cellspacing="0">
+		<tbody><tr><td class="CalNextPrev"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2018/12/01&#39;);return false;">&lt;</a></td><td align="center">2019年1月</td><td class="CalNextPrev" align="right"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2019/02/01&#39;);return false;">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" align="center" abbr="日" scope="col">日</th><th class="CalDayHeader" align="center" abbr="一" scope="col">一</th><th class="CalDayHeader" align="center" abbr="二" scope="col">二</th><th class="CalDayHeader" align="center" abbr="三" scope="col">三</th><th class="CalDayHeader" align="center" abbr="四" scope="col">四</th><th class="CalDayHeader" align="center" abbr="五" scope="col">五</th><th class="CalDayHeader" align="center" abbr="六" scope="col">六</th></tr><tr><td class="CalOtherMonthDay" align="center">30</td><td class="CalOtherMonthDay" align="center">31</td><td align="center">1</td><td align="center">2</td><td align="center">3</td><td align="center">4</td><td class="CalWeekendDay" align="center">5</td></tr><tr><td class="CalWeekendDay" align="center">6</td><td align="center">7</td><td align="center">8</td><td align="center">9</td><td align="center">10</td><td align="center">11</td><td class="CalWeekendDay" align="center">12</td></tr><tr><td class="CalWeekendDay" align="center">13</td><td align="center">14</td><td class="CalTodayDay" align="center">15</td><td align="center">16</td><td align="center">17</td><td align="center">18</td><td class="CalWeekendDay" align="center">19</td></tr><tr><td class="CalWeekendDay" align="center">20</td><td align="center">21</td><td align="center">22</td><td align="center">23</td><td align="center">24</td><td align="center">25</td><td class="CalWeekendDay" align="center">26</td></tr><tr><td class="CalWeekendDay" align="center">27</td><td align="center">28</td><td align="center">29</td><td align="center">30</td><td align="center">31</td><td class="CalOtherMonthDay" align="center">1</td><td class="CalOtherMonthDay" align="center">2</td></tr><tr><td class="CalOtherMonthDay" align="center">3</td><td class="CalOtherMonthDay" align="center">4</td><td class="CalOtherMonthDay" align="center">5</td><td class="CalOtherMonthDay" align="center">6</td><td class="CalOtherMonthDay" align="center">7</td><td class="CalOtherMonthDay" align="center">8</td><td class="CalOtherMonthDay" align="center">9</td></tr>
+</tbody></table></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><div id="sidebar_search" class="sidebar-block">
+<div id="sidebar_search" class="mySearch">
+<h3 class="catListTitle">搜索</h3>
+<div id="sidebar_search_box">
+<div id="widget_my_zzk" class="div_my_zzk"><input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk"></div>
+<div id="widget_my_google" class="div_my_zzk"><input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event)" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk"></div>
+</div>
+</div>
+
+</div><div id="sidebar_shortcut" class="sidebar-block">
+<div class="catListLink">
+<h3 class="catListTitle">常用链接</h3>
+<ul>
+<li><a href="https://www.cnblogs.com/ilanni/p/" title="我的博客的随笔列表">我的随笔</a></li><li><a href="https://www.cnblogs.com/ilanni/MyComments.html" title="我发表过的评论列表">我的评论</a></li><li><a href="https://www.cnblogs.com/ilanni/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li><li><a href="https://www.cnblogs.com/ilanni/RecentComments.html" title="我的博客的评论列表">最新评论</a></li><li><a href="https://www.cnblogs.com/ilanni/tag/" title="我的博客的标签列表">我的标签</a></li>
+</ul>
+<div id="itemListLin_con" style="display:none;">
+<ul>
+
+</ul>
+</div>
+</div></div><div id="sidebar_toptags" class="sidebar-block">
+<div class="catListTag">
+<h3 class="catListTitle">我的标签</h3>
+<ul>
+<li><a href="https://www.cnblogs.com/ilanni/tag/%E7%83%82%E6%B3%A5/">烂泥</a>(117)</li><li><a href="https://www.cnblogs.com/ilanni/tag/%E5%AE%89%E8%A3%85/">安装</a>(23)</li><li><a href="https://www.cnblogs.com/ilanni/tag/KVM/">KVM</a>(19)</li><li><a href="https://www.cnblogs.com/ilanni/tag/%E5%AD%A6%E4%B9%A0/">学习</a>(18)</li><li><a href="https://www.cnblogs.com/ilanni/tag/%E9%85%8D%E7%BD%AE/">配置</a>(17)</li><li><a href="https://www.cnblogs.com/ilanni/tag/ubuntu/">ubuntu</a>(13)</li><li><a href="https://www.cnblogs.com/ilanni/tag/centos/">centos</a>(13)</li><li><a href="https://www.cnblogs.com/ilanni/tag/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a>(12)</li><li><a href="https://www.cnblogs.com/ilanni/tag/mysql/">mysql</a>(11)</li><li><a href="https://www.cnblogs.com/ilanni/tag/%E4%BD%BF%E7%94%A8/">使用</a>(10)</li><li><a href="https://www.cnblogs.com/ilanni/tag/">更多</a></li>
+</ul>
+</div></div><div id="sidebar_categories">
+<div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+<h3 class="catListTitle">随笔分类<span style="font-size:11px;font-weight:normal">(133)</span></h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_0_Link_0" href="https://www.cnblogs.com/ilanni/category/603851.html">Linux(82)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_1" href="https://www.cnblogs.com/ilanni/category/599920.html">实战(17)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_2" href="https://www.cnblogs.com/ilanni/category/603852.html">数据库(11)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_3" href="https://www.cnblogs.com/ilanni/category/593989.html">虚拟化(23)</a> </li>
+
+</ul>
+
+</div>
+
+<div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+<h3 class="catListTitle">随笔档案<span style="font-size:11px;font-weight:normal">(135)</span></h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_1_Link_0" href="https://www.cnblogs.com/ilanni/archive/2016/12.html">2016年12月 (7)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_1" href="https://www.cnblogs.com/ilanni/archive/2016/05.html">2016年5月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_2" href="https://www.cnblogs.com/ilanni/archive/2016/04.html">2016年4月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_3" href="https://www.cnblogs.com/ilanni/archive/2016/03.html">2016年3月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_4" href="https://www.cnblogs.com/ilanni/archive/2016/02.html">2016年2月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_5" href="https://www.cnblogs.com/ilanni/archive/2016/01.html">2016年1月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_6" href="https://www.cnblogs.com/ilanni/archive/2015/11.html">2015年11月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_7" href="https://www.cnblogs.com/ilanni/archive/2015/10.html">2015年10月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_8" href="https://www.cnblogs.com/ilanni/archive/2015/09.html">2015年9月 (6)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_9" href="https://www.cnblogs.com/ilanni/archive/2015/08.html">2015年8月 (6)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_10" href="https://www.cnblogs.com/ilanni/archive/2015/07.html">2015年7月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_11" href="https://www.cnblogs.com/ilanni/archive/2015/06.html">2015年6月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_12" href="https://www.cnblogs.com/ilanni/archive/2015/05.html">2015年5月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_13" href="https://www.cnblogs.com/ilanni/archive/2015/03.html">2015年3月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_14" href="https://www.cnblogs.com/ilanni/archive/2015/02.html">2015年2月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_15" href="https://www.cnblogs.com/ilanni/archive/2015/01.html">2015年1月 (8)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_16" href="https://www.cnblogs.com/ilanni/archive/2014/12.html">2014年12月 (5)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_17" href="https://www.cnblogs.com/ilanni/archive/2014/11.html">2014年11月 (10)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_18" href="https://www.cnblogs.com/ilanni/archive/2014/10.html">2014年10月 (7)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_19" href="https://www.cnblogs.com/ilanni/archive/2014/09.html">2014年9月 (16)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_20" href="https://www.cnblogs.com/ilanni/archive/2014/08.html">2014年8月 (25)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_21" href="https://www.cnblogs.com/ilanni/archive/2014/07.html">2014年7月 (14)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_22" href="https://www.cnblogs.com/ilanni/archive/2012/09.html">2012年9月 (2)</a> </li>
+
+</ul>
+
+</div>
+
+<div id="sidebar_articlearchive" class="catListArticleArchive sidebar-block">
+<h3 class="catListTitle">文章档案<span style="font-size:11px;font-weight:normal">(4)</span></h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_2_Link_0" href="https://www.cnblogs.com/ilanni/archives/2014/10.html" rel="nofollow">2014年10月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_1" href="https://www.cnblogs.com/ilanni/archives/2014/07.html" rel="nofollow">2014年7月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_2" href="https://www.cnblogs.com/ilanni/archives/2014/05.html" rel="nofollow">2014年5月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_3" href="https://www.cnblogs.com/ilanni/archives/2012/09.html" rel="nofollow">2012年9月 (1)</a> </li>
+
+</ul>
+
+</div>
+
+</div><div id="sidebar_recentcomments" class="sidebar-block"><div id="recent_comments_wrap">
+<div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+
+	<div id="RecentCommentsBlock"><ul>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/ilanni/p/4681740.html#4158979">1. Re:烂泥：ubuntu 14.04搭建OpenVPN服务器</a></li>
+        <li class="recent_comment_body">你是精神病么，图上面整的乱七八糟的，谁还能盗你的图？</li>
+        <li class="recent_comment_author">--鲦🦅</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/ilanni/p/4779376.html#4138931">2. Re:烂泥：ubuntu下vsftpd虚拟用户配置</a></li>
+        <li class="recent_comment_body">博主这篇博客写的非常完美。但是有一个问题我不太明白，我采用centos6.x配置vsftpd虚拟账户的操作，在ubuntu上完全可行。我采用的是深度操作系统，部署的，应该没啥区别。博主有空可以再试试看......</li>
+        <li class="recent_comment_author">--运维笔记</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/ilanni/p/3873517.html#4122921">3. Re:烂泥：U盘安装Centos6.5</a></li>
+        <li class="recent_comment_body">66666</li>
+        <li class="recent_comment_author">--规格严格-功夫到家</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/ilanni/p/6240505.html#4122186">4. Re:烂泥：redis3.2.3安装与配置</a></li>
+        <li class="recent_comment_body">资深老玩家，666</li>
+        <li class="recent_comment_author">--从未太晚</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/ilanni/p/6200875.html#4099325">5. Re:烂泥：jira7.2安装、中文及破解</a></li>
+        <li class="recent_comment_body">运行一段时间后重启，会出现An error occurred when trying to parse the version information JSON object版本信息出错。无法启动，怎......</li>
+        <li class="recent_comment_author">--羽之</li>
+</ul>
+</div>
+</div>
+</div></div><div id="sidebar_topviewedposts" class="sidebar-block"><div id="topview_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock"><ul><li><a href="https://www.cnblogs.com/ilanni/p/6200875.html">1. 烂泥：jira7.2安装、中文及破解(14987)</a></li><li><a href="https://www.cnblogs.com/ilanni/p/4542896.html">2. 烂泥：学习ubuntu远程桌面（一）：配置远程桌面(14602)</a></li><li><a href="https://www.cnblogs.com/ilanni/p/5294611.html">3. 烂泥：Postfix邮件服务器搭建之软件安装与配置(14302)</a></li><li><a href="https://www.cnblogs.com/ilanni/p/4750081.html">4. 烂泥：高负载均衡学习haproxy之安装与配置(14121)</a></li><li><a href="https://www.cnblogs.com/ilanni/p/4681740.html">5. 烂泥：ubuntu 14.04搭建OpenVPN服务器(11167)</a></li></ul></div>
+</div>
+</div></div><div id="sidebar_topcommentedposts" class="sidebar-block"><div id="topfeedback_posts_wrap">
+<div class="catListFeedback">
+<h3 class="catListTitle">评论排行榜</h3>
+	<div id="TopFeedbackPostsBlock"><ul><li><a href="https://www.cnblogs.com/ilanni/p/3878151.html">1. 烂泥： KVM虚拟机Linux系统增加硬盘(5)</a></li><li><a href="https://www.cnblogs.com/ilanni/p/4542896.html">2. 烂泥：学习ubuntu远程桌面（一）：配置远程桌面(4)</a></li><li><a href="https://www.cnblogs.com/ilanni/p/4312581.html">3. 烂泥：Linux源码包制作RPM包之Apache(3)</a></li><li><a href="https://www.cnblogs.com/ilanni/p/4010321.html">4. 烂泥：nginx、php-fpm、mysql用户权限解析(3)</a></li><li><a href="https://www.cnblogs.com/ilanni/p/6200875.html">5. 烂泥：jira7.2安装、中文及破解(2)</a></li></ul></div>
+</div>
+</div></div><div id="sidebar_topdiggedposts" class="sidebar-block"><div id="topdigg_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">推荐排行榜</h3>
+<div id="TopDiggPostsBlock"><ul><li><a href="https://www.cnblogs.com/ilanni/p/4750081.html">1. 烂泥：高负载均衡学习haproxy之安装与配置(4)</a></li><li><a href="https://www.cnblogs.com/ilanni/p/4542896.html">2. 烂泥：学习ubuntu远程桌面（一）：配置远程桌面(3)</a></li><li><a href="https://www.cnblogs.com/ilanni/p/5452223.html">3. 烂泥：zabbix3.0安装与配置(2)</a></li><li><a href="https://www.cnblogs.com/ilanni/p/5294611.html">4. 烂泥：Postfix邮件服务器搭建之软件安装与配置(2)</a></li><li><a href="https://www.cnblogs.com/ilanni/p/5294553.html">5. 烂泥：Postfix邮件服务器搭建之虚拟用户配置(2)</a></li></ul></div>
+</div></div></div></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright ©2019 烂泥行天下
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+<!--PageEndHtml Block Begin-->
+秀依林枫http://xiuylf.taobao.com㊣烂泥行天下http://www.ilanni.com
+<!--PageEndHtml Block End-->
+
+
+<iframe id="google_osd_static_frame_4993670404713" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;" src="./烂泥：haproxy学习之手机规则匹配 - 烂泥行天下 - 博客园_files/saved_resource(2).html"></iframe></body></html>

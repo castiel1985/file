@@ -1,20 +1,20 @@
-°æ±¾7.1.3
+ï»¿ç‰ˆæœ¬7.1.3
 
 ./configure 
 
-ĞèÒªµÄÒÀÀµ¹ØÏµ£º
+éœ€è¦çš„ä¾èµ–å…³ç³»ï¼š
 
 
 
 
-ĞèÒªÓ³ÉäµÄÈíÁ¬½Ó
+éœ€è¦æ˜ å°„çš„è½¯è¿æ¥
 
 ln -sf /usr/local/php7/bin/php	/usr/bin/php
 ln -sf 	/usr/local/php7/sbin/php-fpm   /usr/local/bin/php-fpm
 ln -sf /usr/local/php7/bin/phpize	/usr/local/bin/phpize
 ln -sf /usr/local/php7/bin/pecl		/usr/local/bin/pecl
 
-ĞèÒª¿½±´µÄÎÄ¼ş£º
+éœ€è¦æ‹·è´çš„æ–‡ä»¶ï¼š
 
 
 

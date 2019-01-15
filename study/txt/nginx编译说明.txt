@@ -1,29 +1,29 @@
-(1)ÊÖ¶¯±àÒë£¬±ØĞë°üÀ¨ zlib,openssl, pcreÈı´ó×é¼ş £¬²¢ĞèÒª perl5
+ï»¿(1)æ‰‹åŠ¨ç¼–è¯‘ï¼Œå¿…é¡»åŒ…æ‹¬ zlib,openssl, pcreä¸‰å¤§ç»„ä»¶ ï¼Œå¹¶éœ€è¦ perl5
 
-(2)ÁíÍâ±àÒë±ØĞë°üÀ¨£ºgccºÍmake, 
+(2)å¦å¤–ç¼–è¯‘å¿…é¡»åŒ…æ‹¬ï¼šgccå’Œmake, 
 
 (3)./configure --prefix=/usr/local/nginx  --with-http_gzip_static_module  --with-pcre=/usr/local/src/pcre  --with-opensssl=/usr/local/src/openssl --with-zlib=/usr/local/src/zlib
 
 (4)make &&make install
 
-(5)ln -sf  /usr/local/nginx/sbin/nginx 	/usr/bin/nginx    ½¨Á¢ÈíÁ¬½Ó
+(5)ln -sf  /usr/local/nginx/sbin/nginx 	/usr/bin/nginx    å»ºç«‹è½¯è¿æ¥
 
 
 
-nginx -t ½øĞĞ¿ÉĞĞĞÔ²âÊÔ 
+nginx -t è¿›è¡Œå¯è¡Œæ€§æµ‹è¯• 
 
 
 
-ÔÚnginx.confÖĞÖØÒªĞŞ¸ÄÈçÏÂ£º
+åœ¨nginx.confä¸­é‡è¦ä¿®æ”¹å¦‚ä¸‹ï¼š
 
-Ö¸¶¨ root  /home/www
-Ö¸¶¨ index  index.php
-ĞŞ¸Ä  fastcgi_param  Îª   /home/www$fastcgi_script_name  ¼´½«Ö¸¶¨µÄ½âÎöÄ¿Â¼Ö¸Ïò´úÂëËùÔÚµØÖ·
+æŒ‡å®š root  /home/www
+æŒ‡å®š index  index.php
+ä¿®æ”¹  fastcgi_param  ä¸º   /home/www$fastcgi_script_name  å³å°†æŒ‡å®šçš„è§£æç›®å½•æŒ‡å‘ä»£ç æ‰€åœ¨åœ°å€
 
 
 
-È¨ÏŞ¿ª·Å£º
-/home/www	chown  -R www:www  ±ØĞë½«ÓµÓĞÕÛ¸ÄÎªphpºÍnginx¶¼¿ÉÒÔ·ÃÎÊµÄÈ¨ÏŞ
+æƒé™å¼€æ”¾ï¼š
+/home/www	chown  -R www:www  å¿…é¡»å°†æ‹¥æœ‰æŠ˜æ”¹ä¸ºphpå’Œnginxéƒ½å¯ä»¥è®¿é—®çš„æƒé™
 
 
 

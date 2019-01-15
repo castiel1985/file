@@ -1,47 +1,47 @@
-±£´æ¾µÏñ
+ï»¿ä¿å­˜é•œåƒ
 # docker save -o rocketmq.tar rocketmq
 
-ÔØÈë¾µÏñ
-docker load --input rocketmq.tar »ò docker load < rocketmq.tar
+è½½å…¥é•œåƒ
+docker load --input rocketmq.tar æˆ– docker load < rocketmq.tar
 
-É¾³ı¾µÏñ
-docker rmi -f image_id ##-f£º±íÊ¾Ç¿ÖÆÉ¾³ı¾µÏñ£»image_id£º¾µÏñid
-
-
+åˆ é™¤é•œåƒ
+docker rmi -f image_id ##-fï¼šè¡¨ç¤ºå¼ºåˆ¶åˆ é™¤é•œåƒï¼›image_idï¼šé•œåƒid
 
 
 
 
-docker ps                              ÁĞ³öÔËĞĞµÄÈİÆ÷
-
-docker images              ÁĞ³ö±¾µØ¾µÏñ
-
-docker rmi image-name      É¾³ı±¾µØ¾µÏñ
-
-docker mi -f $(docker images) Ç¿ÖÆÉ¾³ıËùÓĞ¾µÏñ
-
-docker rm container-¡¸name,id¡¹É¾³ıÈİÆ÷
-
-docker rm -f $(docker ps -a -q)É¾³ıËùÓĞÈİÆ÷
-
-docker stop container-id        Í£Ö¹ÈİÆ÷
-
-docker kill container-id            Ç¿ÖÆÍ£Ö¹ÈİÆ÷
-
-docker start container-id        Æô¶¯
-
-docker restart container-id    ÖØÆô
-
-docker attach container-id     ½øÈëÈİÆ÷
 
 
+docker ps                              åˆ—å‡ºè¿è¡Œçš„å®¹å™¨
 
-ÔËĞĞdocker¾µÏñ£¬±¾µØÃ»ÓĞ´ÓDocker HubÀ­È¡  docker run hello-world
+docker images              åˆ—å‡ºæœ¬åœ°é•œåƒ
+
+docker rmi image-name      åˆ é™¤æœ¬åœ°é•œåƒ
+
+docker mi -f $(docker images) å¼ºåˆ¶åˆ é™¤æ‰€æœ‰é•œåƒ
+
+docker rm container-ã€Œname,idã€åˆ é™¤å®¹å™¨
+
+docker rm -f $(docker ps -a -q)åˆ é™¤æ‰€æœ‰å®¹å™¨
+
+docker stop container-id        åœæ­¢å®¹å™¨
+
+docker kill container-id            å¼ºåˆ¶åœæ­¢å®¹å™¨
+
+docker start container-id        å¯åŠ¨
+
+docker restart container-id    é‡å¯
+
+docker attach container-id     è¿›å…¥å®¹å™¨
 
 
-docker run -d -p 8888:80 --name webserver nginx      -d ºóÌ¨ÔËĞĞ -p ËŞÖ÷»ú¶Ë¿Ú£ºÈİÆ÷¶Ë¿Ú
+
+è¿è¡Œdockeré•œåƒï¼Œæœ¬åœ°æ²¡æœ‰ä»Docker Hubæ‹‰å–  docker run hello-world
+
+
+docker run -d -p 8888:80 --name webserver nginx      -d åå°è¿è¡Œ -p å®¿ä¸»æœºç«¯å£ï¼šå®¹å™¨ç«¯å£
  
-°²×°docker
+å®‰è£…docker
 (1) sudo apt-get remove docker docker-engine docker.io
 (2) curl -fsSL get.docker.com -o get-docker.sh
 (3) sudo sh get-docker.sh
@@ -49,7 +49,7 @@ docker run -d -p 8888:80 --name webserver nginx      -d ºóÌ¨ÔËĞĞ -p ËŞÖ÷»ú¶Ë¿Ú£º
 
 
 
-½øÈëÈİÆ÷£º
+è¿›å…¥å®¹å™¨ï¼š
 sudo docker exec -it 775c7c9ee1e1 /bin/bash
 
 

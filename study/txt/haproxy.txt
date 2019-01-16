@@ -26,4 +26,111 @@ backend	:
 listen admin_stats
 定义统计报告，有具体的实际地址和用户名密码
 
- 
+
+
+
+关键词： 
+blance:  算法选择
+(1)roundrobin:基于权重进行轮询，每个后端最多接受4128个连接
+(2)souurce:按照源地址进行HASH运算，按照后端服务器的权重总数相除后被配到后端服务器，优点：使得某一客户端IP总配到某特定的服务器（除非权重发生变化）。特别用于没有cookie功能的基于TCP协议的情况下。
+(3)static-rr:和 RR相似，后端没有4128上限
+(4)leastconn: 新的连接被配到最少连接的后端服务器
+(5)uri	:对uri 进行hash运算，可以使得对同一个uri的请求总被配发到特定的服务器，此算法常用于代理缓存或者反病毒代理以提高缓存的命中率。
+(6) uri_param	：
+(7) hdr	:
+
+
+bind: 仅仅用于frontend和listen区段， <address>:<port>  ip4或者ip6+PORT， <interface>
+
+hash-type:	定义hash码映射到后端服务器的方法，
+(1) map-based	hash表是一个包含了所有在线服务器的静态数组，是静态方法，即调整在线服务器权重将不生效，也就不支持慢速启动。（当有服务器宕机或者新服务器时，大多数连接会被配到与此前不同的服务器上）
+(2) consistent	bash表是一个由各个服务器填充的树桩结构。支持在运行时候修改服务器的权重，添加新服务器时候，仅仅影响一小部分客户连接。
+
+
+log: 
+格式： log <address><facility><level>    address可以为一个IP加端口，level定义日志级别
+
+macconn:
+设定前端的最大并发连接数量，不能用于后端
+
+
+default_backend	没有匹配 use_backend的规则时候制定默认的后端服务器
+
+
+
+server:
+为后端申明一个后端服务器，
+格式： server <name> <address> <port> [param]
+parma:
+backup: 设定备用服务器，仅仅在其他服务器不可用时候用到
+check:	对server 进行健康检查
+inter:	设定健康检查的时间间隔，单位为毫秒，默认2000
+rise:	设定健康状态检查中，某离线的服务器转至常态需要的成功检查次数
+fall:	确认服务器从正常转到不可用状态需要检查的次数
+cookie:	在请求时被检查，方便在后续的请求中被选中，目的为实现持久连接
+maxconn:	发往此服务器的最大连接数，超过此连接数量，将被发往请求队列
+maxqueue:	设定请求队列的长度
+observe:	观察服务器的状态来判定健康状态，默认为禁用。
+redir:	启用重定向，后面直接跟实际地址
+weight:	权重，默认为1最大为256
+
+
+
+
+检查方法：
+option httpchk <method> <uri>  不能用于frontend
+
+
+
+
+stats  enable	启用基于程序编程时候的统计报告，不能用于frontend
+
+stats	hide-version	隐藏在统计报告中的版本号，不能用于frontend
+
+stats	realm	启用统计报告高精度认证, 不能用于frontend
+
+stats	scope	启用统计报告并限定区段，不能用于frontend
+
+stats	auth	后面跟用户名和密码
+
+stat admin {if | unless} + 条件
+
+
+
+option	httplog		启用记录HTTP请求，会话状态和计时器的功能
+
+
+option	logasap		启用提前将HTTP请求记入日志，不能用于backend
+
+option	forwardfor	允许发往服务器的请求插入"X-Forwarded-For"首部，即允许服务端获取客服端真实IP功能
+格式： option	forwarded	[ except <127.0.0.1> ]	[ header <name> ] if-none	(if-none,仅仅当首部不存在时候才将其添加到请求报文中)
+
+
+errorfile	请求页面不存在，返回给用户一个code和页面
+格式：	errorfile <code> <file>			code:403,503,400
+	filr 为实际地址的页面文件
+
+errorloc	请求错误时，重定向一个页面和一个错误的code
+格式：	errorloc  <code> <file>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

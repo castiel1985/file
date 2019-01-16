@@ -1,0 +1,10 @@
+需要的系统组件：gcc make
+
+源码安装
+
+查看 uname -a
+(1) make TARGET=linux26 ARCH=x86_64 PREFIX=/usr/local/haproxy
+(2) make install PREFIX=/usr/local/haproxy
+(3) sudo cp examples/haproxy.cfg /usr/local/haproxy/
+
+

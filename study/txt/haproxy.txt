@@ -1,0 +1,29 @@
+(1)结构：
+global: 定义主要的几个参数，用户等，后台启用
+
+defaults:  定义 mode:http
+		option: 
+		maxconn:最大连接数
+		
+
+frontend:
+(1)定义主要的前端监听接口  http 就是80
+(2)定义具体的 规则
+	acl is_ip	src	192.168.0.75
+	acl is_66	src	192.168.0.66
+	acl is_feng	hdr_beg(hosut)	feg.com
+(3)指向具体的后端 。在匹配规则的前提下。
+(4) 定义默认的后端   default_backend
+
+
+backend	:
+(1)定义算法 balance  roundrobin
+(2) 定义具体的后端地址	server	web1 192.168.0.75:83
+
+
+
+
+listen admin_stats
+定义统计报告，有具体的实际地址和用户名密码
+
+ 

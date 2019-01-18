@@ -39,6 +39,7 @@ listen admin_stats
 
 
 
+ 支持负载均衡算法：Round-robin（轮循）、Weight-round-robin（带权轮循）、source（原地址保持）、RI（请求URL）、rdp-cookie（根据cookie）
 
 关键词： 
 blance:  算法选择

@@ -1,0 +1,120 @@
+（1）核心指令：
+1.root:
+	指定具体的解析位置
+2.alias:
+	目录别名 （root与alias主要区别在于nginx如何解释location后面的uri，这会使两者分别以不同的方式将请求映射到服务器文件上。
+root的处理结果是：root路径＋location路径
+alias的处理结果是：使用alias路径替换location路径）
+location ^~ /t/ {
+ alias /www/root/html/new_t/;
+}
+如果一个请求的URI是/t/a.html时，web服务器将会返回服务器上的/www/root/html/new_t/a.html的文件。
+
+3.error_page:
+ error_page   502 503 504  /50x.html;
+指定具体的错误页
+
+4.internal ，限制访问Web 公共目录下的图片等资源文件被任意用户直接访问。
+location  /404.html {
+  internal;
+
+}
+
+5.index 依次寻找根目录下面的index页面，找不到，只能输出错误页
+	autoindex on 设置的话，则会自动生成目录索引
+
+6.include  包含同目录下的相关配置文档
+
+7.keepalive_timeout  一个请求完成之后还要保持连接多久，不是请求时间多久，目的是保持长连接，减少创建连接过程给系统带来的性能损耗，类似于线程池，数据库连接池。
+
+
+8.keepalive_requests  每个连接最大请求数量
+
+注明：7和8 这两个是配置长连接的
+	服务为什么使用HTTPs长连接技术？有如下几个原因：
+	对响应时间要求较高；
+	服务走的是公网，客户端与服务端的TCP建立的三次握手和断开的四次握手都需要40ms左右(真实数据包计算出来的)，共需要80ms左右；
+	每个接入方使用的IP就若干个，需要建立的请求连接有限。
+	使用长连接技术，可以大幅减少TCP频繁握手的次数，极大提高响应时间；同时，即使使用长连接技术，也不需要消耗很多的系统资源用来缓存sockets会话信息。
+
+9.default_type	默认回应客户请求的类型，一般从mine.type中的映射获取
+比如：
+	 application/octet-stream 这个类型会让浏览器认为响应是普通的文件流，并提示用户下载文件。
+
+10.listen
+监听的IP和端口
+
+
+11.send_timeout ：服务端向客户端传输数据的超时时间。
+
+
+12.sendfile:	指定是否使用sendfile系统调用来传输文件。默认为关闭off
+sendfile系统调用在两个文件描述符之间直接传递数据(完全在内核中操作)，从而避免了数据在内核缓冲区和用户缓冲区之间的拷贝，操作效率很高，被称之为零拷贝。
+
+
+13. 异步参数： directio  和 aio
+directio 直接I/O，其从应用程序到磁盘直接读取和写入，从而绕过所有操作系统缓存。 这使得更好地利用CPU周期和提高缓存效率。
+该方法用于数据具有较差命中率的地方。 这样的数据不需要在任何高速缓存中，并且可以在需要时加载。 它可以用于提供大文件。 directio指令启用该功能。 该指令可用于http，server和location区块：
+
+location /video/ {
+     directio 4m;
+     directio_alignment 512;
+}
+
+directio_alignment指令来设置块大小。
+
+异步I/O允许进程进行不受阻塞或不需要等待I/O完成的I/O操作。
+aio命令可在NGINX配置的http，server和location区块下使用。 根据在指令所在区块，该指令将为匹配的请求执行异步I/O。 该参数适用于Linux内核2.6.22+和FreeBSD 4.3
+location /data {
+     aio on;
+} 这是普通正常使用。
+        autoindex on 设置的话，则会
+在NGINX全局上下文中使用thread_pool指令添加一个线程池。 在aio配置中使用该线程池：
+
+thread_pool io_pool threads=16;
+   http{
+   ........
+      location /data{
+        sendfile    on;
+        aio        threads=io_pool;
+} }
+
+
+
+14.吞吐量参数：
+	client_max_body_size: 客户上传文件最大值
+	client_body_buffer_size：设置用于请求主体的缓冲区大小。 如果主体超过缓冲区大小，则完整主体或其一部分将写入临时文件。 如果NGINX配置为使用文件而不是内存缓冲区，则该指令会被忽略。 默认情况下，该指令为32位系统设置一个8k缓冲区，为64位系统设置一个16k缓冲区。 该指令在NGINX配置的http，server和location区块使用。
+	client_body_in_file_only：禁用NGINX缓冲区并将请求体存储在临时文件中，可选值有：
+		off:该值将禁用文件写入
+		clean：请求body将被写入文件。 该文件将在处理请求后删除。
+		on: 请求正文将被写入文件。 处理请求后，将不会删除该文件。默认情况下，指令值为关闭
+  
+	client_body_in_single_buffer：设置NGINX将完整的请求主体存储在单个缓冲区中。 默认情况下，指令值为off。 如果启用，它将优化读取$request_body变量时涉及的I/O操作。
+	client_header_buffer_size：为请求头分配一个缓冲区。 如果请求头大小大于指定的缓冲区，则使用large_client_header_buffers指令分配更大的缓冲区。
+	large_client_header_buffers：规定了用于读取大型客户端请求头的缓冲区的最大数量和大小。 这些缓冲区仅在缺省缓冲区不足时按需分配。 当处理请求或连接转换到保持活动状态时，释放缓冲区。
+	client_body_temp_path:此指令指定存储请求正文的临时文件的位置。 除了位置之外，指令还可以指定文件是否需要最多三个级别的文件夹层次结构。 级别指定为用于生成文件夹的位数。默认情况下，NGINX在NGINX安装路径下的client_body_temp文件夹创建临时文件。 如下例子：
+	server{
+      		client_body_temp_pathtemp_files 1 2;
+      }
+	该指令生成的文件路径如temp_files/1/05/0000003051。
+
+
+
+
+
+
+
+(2)主要模块：
+http模块:
+
+
+
+server模块：
+
+
+
+events模块：
+	worker_connections 2048; 设置可由一个worker进程同时打开的最大连接数
+	multi_accept on; 收到一个新连接通知后接受尽可能多的连接
+	use epoll ;    设置用于复用客户端线程的轮询方法 
+

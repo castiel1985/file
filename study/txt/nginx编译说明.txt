@@ -31,4 +31,109 @@ nginx -t 进行可行性测试
 
 
 
-***************************************************************************************************************************************************************************************
+**************************************
+
+NGINX  编译模块参数说明：
+(1)通用模块：几个简单参数，conf,pid,prefix,user,lock,group,file-aio
+--prefix=<path>：Nginx 安装的根路径，所有其他的路径都要依赖于该选项。
+--sbin-path=<path>：指定 Nginx 二进制文件的路径。如果没有指定，那么这个路径会依赖于 --prefix 选项。
+--conf-path=<path>：如果在命令行没有指定配置文件，那么将会通过这里指定路径，Nginx 将会去那里查找它的配置文件。
+--error-log-path=<path>：指定错误文件的路径，Nginx 将会往其中写入错误日志文件，除非有其他的配置。
+--pid-path=<path>：指定的文件将会写入 Nginx master 进程的 pid，通常在 /var/run 下。
+--lock-path=<path>：共享存储器互斥锁文件的路径。
+--user=<user>：worker 进程运行的用户。
+--group=<group>：worker 进程运行的组。
+--with-file-aio：为 FreeBSD 4.3+ 和 Linux 2.6.22+ 系统启用异步 I/O。
+--with-debug：这个选项用于启用调试日志。在生产环境的系统中不推荐使用该选项。
+
+
+(2)优化编译：cc, cpp, ld-opt等，
+--with-cc=<path>：如果想设置一个不在默认 PATH 下的 C 编译器。
+--with-cpp=<path>：设置 C 预处理器的相应路径.
+--with-cc-opt=<options>: 指定必要的 include 文件路径，可能 d（-I<path）指出，也可能是优化（-O4）和指定一个 64 位构建。
+--with-ld-opt=<options>：包含连接器库的路径（-L
+--with-cpu-opt=<cpu>：通过该选项为特定的 CPU 构建 Nginx。
+
+
+(3)mail配置选项，主要是用来为了做mail服务器使用
+--with-mail：该选项用于启用 mail 模块，该模块默认没有激活。
+--with-mail_ssl_module：为了代理任何一种类型的使用 SSL/TLS 的 mail，激活该模块。
+--without-mail_pop3_module：在启用 mail 模块后，单独地禁用 POP3 模块。
+--without-mail_imap_module：在启用 mail 模块后，单独地禁用 IMAP 模块。
+--without-mail_smtp_module：在启用 mail 模块后，单独地禁用 SMTP 模块。
+--without-http：该选项将完全禁用 http 模块，如果你只想支持 mail，那么可以使用它。
+
+
+(4)http配置选项(最主要的选项)：
+1.--without-http-cache：在使用 upstream 模块时，Nginx 能够配置本地缓存内容。这个选项能够禁用缓存。
+
+perl:
+2.--with-http_perl_module：Nginx 配置能够扩展使用 Perl 代码。这个选项启用这个模块（然而使用这个模块会降低性能）。
+3.--with-perl_modules_path=<path>：对于额外嵌入的 Perl 模块，使用该选项指定该 Perl 解析器的路径。也可以通过配置选项来指定 Perl 模块解析器的位置。
+4.--with-perl=<path>：如果在默认的路径中没有找到 Perl，那么指定 Perl（5.6 版本以上）的路径。
+
+
+temp:
+5.--http-client-body-temp-path=<path>：从客户端收到请求后，该选项设置的目录用于作为请求体临时存放的目录。如果 WebDAV 模块启用，那么推荐设置该路径为同一个文件系统上的目录作为最终的目的地。(常用)
+6.--http-proxy-temp-path=<path>：在使用代理后，通过该选项设置存放临时文件路径。(常用)
+7.--http-fastcgi-temp-path=<path>：设置 FastCGI 临时文件的目录。(常用)
+8.--http-uwsgi-temp-path=<path>：设置 uWSGI 临时文件的目录。
+9.--http-scgi-temp-path=<path>：设置 SCGI 临时文件的目录。
+
+ssl:
+10.--with-http_ssl_module：如果需要对流量进行加密，那么可以使用这个选项，在 URLs 中开始部分将会是 https（需要 OpenSSL）。(常用)
+
+负载均衡ip：
+11.--with-http_realip_module：如果你的 Nginx 在七层负载均衡器或者是其他设备之后，它们将 Http 头中的客户端 IP 地址传递，那么你将会需要启用这个模块。在多个客户处于一个 IP 地址下使用。
+
+
+过滤：
+12.--with-http_sub_module：该模块实现了替代过滤，在响应中用一个字符串替代另一个字符串。(常用)
+13.--with-http_image_filter_module：该模块被作为图像过滤器使用，在将图像投递到客户之前进行处理（需要 libgd 库）。
+
+流媒体：
+14.--with-http_flv_module：如果需要提供 Flash 流媒体视频文件，那么该模块将会提供伪流媒体。
+15.--with-http_mp4_module：这个模块支持 H.264/AAC 文件伪流媒体。
+
+压缩：
+16.--with-http_gzip_static_module：当被调用的资源没有 .gz 结尾格式的文件时，如果想支持发送预压缩版本的静态文件，那么使用该模块。(常用)
+17.--with-http_gunzip_module：对于不支持 gzip 编码的客户，该模块用于为客户解压缩预压缩内容。
+
+其他：
+18.--with-http_addition_module：这个模块作为一个输出过滤器，使你能够在请求经过一个 location 前或者后时在该 location 本身添加内容。
+19.--with-http_xslt_module：该模块用于 XML 响应转换，基于一个或者多个 XSLT 格式（需要 libxml2 和 libxslt 库）。
+20.--with-http_dav_module：启用这个模块将激活使用 WebDAV 的配置指令。请注意，这个模块也只在有需要使用的基础上启用，如果配置不正确，它可能带来安全问题。
+21.--with-http_random_index_module：如果你想提供从一个目录中随机选择文件的索引文件，那么这个模块需要被激活。
+22.--with-http_secure_link_module：该模块提供了一种机制，它会将一个哈希值链接到一个 URL 中，因此，只有那些使用正确的密码能够计算链接。
+23.--with-http_stub_status_module：启用这个模块后会收集 Nginx 自身的状态信息。输出的状态信息可以使用 RRDtool 或类似的东西来绘制成图。(常用)
+
+
+(5)禁用的配置选项（默认禁用）
+--without-http_charset_module：该字符集模块负责设置 Content-Type 响应头，以及从一个字符集转换到另一个字符集。
+--without-http_gzip_module：gzip 模块作为一个输出过滤器，在将内容投递到客户时对内容进行压缩。
+--without-http_ssi_module：该模块是一个过滤器，用于处理 SSI 包含。如果启用 Perl 模块，那么额外的 SSI 指令（perl）可用。
+--without-http_userid_module：userid 模块能够使得 Nginx 设置 cookies，用于客户标识。变量 $uid_set 和 $uid_got 可以记录用户跟踪。
+--without-http_access_module：access 模块基于 IP 控制访问 location。
+--without-http_auth-basic_module：该模块通过 Http 基本身份验证限制访问。
+--without-http_autoindex_module：如果一个目录中没有 index 文件，那么 autoindex 模块收集这个目录列出文件。
+--without-http_geo_module：该模块能够让你基于客户端 IP 地址设置配置变量，然后根据这些变量的值采取行动。
+--without-http_map_module：map 模块能够让你映射一个变量到另一个变量。
+--without-http_split_clients_module：该模块创建用于 A/B 测试的变量。
+--without-http_referer_module：该模块能够让 Nginx 阻止基于 Referer Http 头的请求。
+--without-http_rewrite_module：通过 rewrite 模块能够让你基于变量条件改变 URI。
+--without-http_proxy_module：使用 proxy 模块允许 Nginx 将请求传递到其他服务器或者服务器组。
+--without-http_fastcgi_module：FastCGI 模块能够让 Nginx 将请求传递到 FastCGI 服务器。
+--without-http_uwsgi_module：这个模块能够使得 Nginx 将请求传递到 uWSGI 服务器。
+--without-http_scgi_module：SCGI 模块能够让 Nginx 将请求传递到 SCGI 服务器。
+--without-http_memcached_module：该模块能够使得 Nginx 与一个 memcached 服务器进行交互，将响应放置到变量查询中。
+--without-http_limit_conn_module：该模块能够使得 Nginx 基于某些键，通常是 IP 地址，设置连接限制。
+--without-http_limit_req_module：通过该模块，Nginx 能够限制每个用户的请求率。
+--without-http_empty_gif_module：在内存中产生一个 1 像素 * 1 像素的透明 GIF 图像。
+--without-http_browser_module：browser 模块允许基于 User-Agent Http 请求头配置，变量的设置基于在该头中发现的版本。
+--without-http_upstream_ip_hash_module：该模块定义了一组可以与不同的代理模块结合使用的服务器。
+
+
+
+
+****************************************************************************************************************************
+

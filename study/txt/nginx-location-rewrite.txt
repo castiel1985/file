@@ -1,5 +1,9 @@
 location：
 
+匹配规律：
+	（1）先匹配普通，再匹配正则；
+	（2）先匹配普通 location ，再“考虑”匹配正则 location 。注意这里的“考虑”是“可能”的意思，也就是说匹配完“普通 location ”后，有的时候需要继续匹配“正则 location ”，有的时候则不需要继续匹配“正则 location ”。两种情况下，不需要继续匹配正则 location ：当普通 location 前面指定了“ ^~ ”，特别告诉 Nginx 本条普通 location 一旦匹配上，则不需要继续正则匹配；当普通location 恰好严格匹配上，不是最大前缀匹配，则不再继续匹配正则。
+
 语法规则： location [=|~|~*|^~] /uri/ { … }
 = 开头表示精确匹配
 ^~ 开头表示uri以某个常规字符串开头，理解为匹配 url路径即可。nginx不对url做编码，因此请求为/static/20%/aa，可以被规则^~ /static/ /aa匹配到（注意是空格）。
@@ -46,6 +50,35 @@ location / {
 访问 http://localhost/a.PNG 则匹配规则E， 而不会匹配规则D，因为规则E不区分大小写。
 访问 http://localhost/a.xhtml 不会匹配规则F和规则G，http://localhost/a.XHTML不会匹配规则G，因为不区分大小写。规则F，规则G属于排除法，符合匹配规则但是不会匹配到，所以想想看实际应用中哪里会用到。
 访问 http://localhost/category/id/1111 则最终匹配到规则H，因为以上规则都不匹配，这个时候应该是nginx转发请求给后端应用服务器，比如FastCGI（php），tomcat（jsp），nginx作为方向代理服务器存在。
+
+
+
+
+
+
+
+
+rewrite:
+	rewrite功能就是，使用nginx提供的全局变量或自己设置的变量，结合正则表达式和标志位实现url重写以及重定向。rewrite只能放在server{},location{},if{}中，并且只能对域名后边的除去传递的参数外的字符串起作用。(需要PCRE支持,通过perl兼容正则表达式语句进行规则匹配的)
+语法格式及参数语法:
+rewrite    <regex>    <replacement>    [flag];
+关键字      正则        替代内容          flag标记
+ 
+    关键字：其中关键字error_log不能改变
+    正则：perl兼容正则表达式语句进行规则匹配
+    替代内容：将正则匹配的内容替换成replacement
+    flag标记：rewrite支持的flag标记
+ 
+flag标记说明：
+last  #本条规则匹配完成后，继续向下匹配新的location URI规则
+break  #本条规则匹配完成即终止，不再匹配后面的任何规则
+redirect  #返回302临时重定向，浏览器地址会显示跳转后的URL地址
+permanent  #返回301永久重定向，浏览器地址栏会显示跳转后的URL地址
+
+
+
+
+
 
 
  

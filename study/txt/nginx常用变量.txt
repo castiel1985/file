@@ -1,0 +1,30 @@
+ 
+ 
+从请求行中解析到的变量:说明： 这些变量在配置文件中通常配合try_files指令和rewrite指令使用。
+$request	整个请求行	GET /nginx-var/request-line?a=1&b=2 HTTP/1.1
+$request_method	请求方法（如GET、POST)	GET
+$request_uri	完整的请求URI	/nginx-var/request-line?a=1&b=2
+$uri	URI，除去查询字符串	/nginx-var/request-line
+$document_uri	同$uri	/nginx-var/request-line
+$args	查询字符串	a=1&b=2
+$query_string	同$args	a=1&b=2
+$server_protocol	请求协议（如HTTP/1.0 HTTP/1.1)	HTTP/1.1
+$arg_name	请求行中name参数的值	$arg_a = 1 , $arg_b = 2
+
+从请求头中解析到的变量:
+$host	该变量按如下优先级获得：请求行中解析到的host、请求头“Host”中的host、配置文件中匹配到的server_name	invo.com
+$remote_addr	客户端ip地址	127.0.0.1
+$remote_port	客户端端口	4204
+$http_user_agent	用户代理（“User-Agent”请求头的值)	Mozilla/5.0 (Windows NT 6.1; rv:50.0) Gecko/20100101 Firefox/50.0
+$http_cookie	“Cookie”请求头的值	CA=abc;CB=123
+$cookie_name	Cookie中名为name的值	$cookie_CA=abc, $cookie_CB=123
+$http_referer	“Http-Referer”请求头的值	http://invo.com
+ 
+说明： $host、$remote_addr、$http_user_agent、$http_referer在配置文件中经常用到，可以根据这些变量来决定如何处理请求。以上变量也经常用在log_format指令中，这些变量的值将记录在日志文件，用于分析日志。有一次特意查看了下日志文件，发现同一个客户端每次请求服务器的端口（$remote_port）会变化，推断公司网络的类型为对称型NAT。
+`
+
+
+
+
+
+--------------------- 

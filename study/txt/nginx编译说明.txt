@@ -137,3 +137,8 @@ ssl:
 
 ****************************************************************************************************************************
 
+
+
+yum 下安装
+./configure --prefix=/usr/local/nginx --with-pcre  --with-http_gzip_static_module --with-http_realip_module --with-http_ssl_module --http-client-body-temp-path=/usr/local/nginx/client-temp --error-log-path=/var/log/nginx/error.log --http-proxy-temp-path=/usr/local/nginx/proxy-temp --http-fastcgi-temp-path=/usr/local/nginx/fastcgi-temp
+

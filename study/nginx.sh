@@ -54,6 +54,7 @@ echo "************Install php ***********"
 yum -y  install gcc gcc++ libxml2-devel curl-devel libjpeg-devel libpng-devel libc-client-devel freetype-devel unixODBC-devel libicu-devel libxslt-devel libmcrypt-devel
 yum -y  install glibc-headers
 
+ln -s /usr/local/lib/libiconv.so.2 /usr/lib64/
 cd  /usr/local/src
 unzip php-7.1.3.zip
 cd  php-7.1.3

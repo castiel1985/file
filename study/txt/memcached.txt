@@ -1,0 +1,15 @@
+源码安装 
+ ./configure --prefix=/usr/local/memcached
+
+ yum install libevent libevent-devel
+make && make install 
+
+
+创建用户不登陆
+ useradd -r -s /sbin/nologin -M memcached
+
+
+
+创建脚本
+
+	

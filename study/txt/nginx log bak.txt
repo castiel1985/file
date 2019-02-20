@@ -1,0 +1,13 @@
+nginx log bak
+
+
+#!/bin/bash
+
+LOGPATH=/var/log/nginx/error.log
+
+a=$(date -d yesterday +%Y%m%d%H%M)
+mv $LOGPATH /opt/${a}.log
+
+touch $LOGPATH
+
+kill -USR1 $(cat /usr/local/nginx/logs/nginx.pid)

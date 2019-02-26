@@ -23,8 +23,29 @@ RIP和DIP在同一网络，私网地址和公网地址都可以，只是RIP的�
 端口不可修改
 
 (3)TUN ： 不修改请求报文的IP首部（源IP是CIP，目标IP 是VIP） ，,在原请求IP报文之外新加一个IP首部（源IP是DIP， 目标IP是RIP）
+将报文发送给目标RS，RS直接响应客户端（源IP是VIP, 目标IP是CIP）
+特点：
+DIP, RIP可以是私网地址。
+RS的网关不指向VS
+请求要经过VS,但是响应不经过VS
+不支持端口映射
 
-FULLNAT ：修改请求报文的 源IP 和  目标 IP （现在内核不支持）
+
+(4)FULLNAT ：修改请求报文的 源IP 和  目标 IP （现在内核不支持）
+
+调度算法：
+静态方法：仅仅根据算法本身进行调度
+轮询，加权轮询，源地址HASH，DH（目标地址哈希）
+
+
+动态算法：根据RS现行的负载状态和调度算法进行调度 overhead=value
+activeconns  活动连接
+inactiveconns  非活动连接
+weight	权重
+
+
+
+
 
 
 

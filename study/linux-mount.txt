@@ -1,0 +1,11 @@
+linux 
+
+
+yum insyall ntfs-3g
+mv /lib/libntfs-3g.so.88 /lib/libntfs-3g.so.88.unwanted
+
+
+ mount -t ntfs-3g  /dev/sdb1 /data
+
+
+ 

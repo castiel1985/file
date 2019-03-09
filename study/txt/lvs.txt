@@ -53,4 +53,15 @@ LVS吞吐量说明：
 
 
 
+操作说明：
+安装 yum install  ipvsadm
+
+开启转发：
+ vim /etc/sysctl.conf添加 net.ipv4.ip_forward=1
+
+添加VS服务（调度器）
+  ipvsadm -A -t 192.168.0.10:80 -s rr
+
+添加RS 
+  
 

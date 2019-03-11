@@ -1,0 +1,36 @@
+#!/bin/bash
+
+VIP=192.168.0.40
+
+./etc/rc.d/init.d/functions
+
+case "$1" in
+start)
+echo "start lvs tunl"
+/sbin/ifconfig tunl0 $VIP broadcast $VIP netmask 255.255.255.255 up
+/sbin/route add -host $VIP dev tunl0
+
+echo "1" > /proc/sys/net/ipv4/conf/tunl0/arp_ignore
+echo "2" > /proc/sys/net/ipv4/conf/tunl0/arp_announce
+echo "1" > /proc/sys/net/ipv4/conf/all/arp_ignore
+echo "2" > /proc/sys/net/ipv4/conf/all/arp_announce
+echo "0" >/proc/sys/net/ipv4/conf/tunl0/rp_filter
+sysctl -p
+;;
+
+stop)
+echo "stop LVS TUNL"
+/sbin/ifconfig tun0 down
+
+echo "0" > /proc/sys/net/ipv4/conf/tunl0/arp_ignore
+echo "0" > /proc/sys/net/ipv4/conf/tunl0/arp_announce
+echo "0" > /proc/sys/net/ipv4/conf/all/arp_ignore
+echo "0" > /proc/sys/net/ipv4/conf/all/arp_announce
+echo "1" >/proc/sys/net/ipv4/conf/tunl0/rp_filter
+;;
+
+*)
+echo :Usage:$0{start|stop}
+exit 1
+esac
+

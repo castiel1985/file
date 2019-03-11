@@ -1,0 +1,37 @@
+#!/bin/bash
+
+VIP=192.168.0.40
+RIP1=192.168.0.106
+RIP2=192.168.0.109
+
+./etc/rc.d/init.d/functions
+
+case "$1" in
+start)
+echo "start LVS TUN"
+
+/sbin/ifconfig enss33:0 $VIP broadcast $VIP netmask 255.255.255.255 up
+/sbin/route add -host $VIP dev enss33:0
+echo "1" > /proc/sys/net/ipv4/ip_forward
+
+/sbin/iptables -F
+/sbin/ipvsadm -C
+/sbin/ipvsadm -A -t $VIP:80 -s rr
+/sbin/ipvsadm -a -t $VIP:80 -r $RIP1:80 -i
+/sbin/ipvsadm -a -t $VIP:80 -r $RIP2:80 -i
+/sbin/ipvsadm
+;;
+
+stop)
+echo "stop LVS TUN"
+echo "0" > /proc/sys/net/ipv4/ip_forward
+/sbin/ipvsadm -C
+/sbin/ipvsadm
+;;
+
+*)
+echo :Usage:$0{start|stop}
+exit 1
+
+esac
+~        

@@ -1,0 +1,22 @@
+lvs-dr
+
+（1）不需要再本地转发数据
+（2）添加虚拟VIP,并添加路由
+
+（3）在rs上可以吧vip复制在 lo上并添加路由，开启ARP参数
+ 
+
+ 关于arp 抑制
+lvs dr 模式中，lvs 和 rs 处于同一个网络中，而且他们都配置相同的 vip。所以，当客户端要向vip 发送网络请求的时候，它会先在整个网络广播一条 arp 请求，询问 vip 对应的mac 地址是什么。arp 广播有可能被lvs 响应，也有可能被realeserver 响应。如果这条请求 vip 的广播被realeserver 服务器响应了，那么客户端的 arp 缓存表就记录了vip 的mac 地址是realserver 的了。这样会导致客户端直接可以将数据请求发送到realserser ，lvs 的负载均衡作用就完全失效，其他的realserver 服务器也不会被请求。
+
+由于存在以上的问题，lvs dr 模式的架构中，需要将realserver 的arp 协议响应和宣告功能进行限制。
+ echo "1" >/proc/sys/net/ipv4/conf/lo/arp_ignore
+echo "2" >/proc/sys/net/ipv4/conf/lo/arp_announce
+echo "1" >/proc/sys/net/ipv4/conf/all/arp_ignore
+echo "2" >/proc/sys/net/ipv4/conf/all/arp_announce
+
+ arp_ignore =1
+作用就是，限制rs 对arp 广播的响应。当 arp 请求的目的 ip 是本机的网络入口设备的ip 时才响应。所以，当arp_ignore设为1后，rs 对网络中询问vip 的 arp 广播包都不再响应。因为rs 的vip 设置在lo:0 虚拟网卡上，不是rs这台机器的网络流入设备。
+
+  arp_announce = 2
+作用就是，限制rs 在对外宣告arp 广播时所使用的源ip 地址。因为，rs 要直接返回客户的请求数据。我们从本文的第6节抓包分析里，就知道rs 需要知道客户机的mac地址，数据包才能发送到网络中，且能准确找到客户机的网卡。

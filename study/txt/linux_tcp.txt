@@ -1,0 +1,55 @@
+文件层面：
+
+ulimit -n
+用于限制进程能够打开的文件描述符的最大数目。因为任何设备在linux下都是文件，通信的接口也有专门的接口文件负责，所以linux下进程tcp链接的最大并发量也受限于该值。
+三种修改方式：
+
+
+1.在/etc/rc.local 中增加一行 ulimit -SHn 65535
+
+2.在/etc/profile 中增加一行 ulimit -SHn 65535
+
+3.在/etc/security/limits.conf最后增加如下两行记录
+* soft nofile 65535
+* hard nofile 65535
+
+
+
+
+
+TCP ：
+
+echo 55000  > /proc/sys/net/core/somaxconn
+
+echo 1 > /proc/sys/net/ipv4/tcp_tw_recycle   快速回收 （默认不快速回收）
+
+echo 1 > /proc/sys/net/ipv4/tcp_tw_reuse    
+
+echo 0 > /proc/sys/net/ipv4/tcp_syncookies
+
+
+
+
+nginx:(全局)
+	worker_connections 10000
+
+	worker_limit_nofile 10000
+
+
+keep_alive 0  (设置为0 ，即断开和服务器连接，可以加快服务器TCP回收)
+
+
+
+ab测试故障： 修改 /etc/syscctl.conf
+(1)apr_socket_recv : Connection reset by peer (104)
+net.ipv4.tcp_syncookies = 0
+
+(2)apr_socket_recv : Connection timed out (110)
+net.nf_conntrack_max = 6553600
+
+net.netfilter.nf_conntrack_tcp_timeout_established = 1200
+
+
+
+sysctl -p /etc/sysctl.conf
+

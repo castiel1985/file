@@ -25,3 +25,24 @@ iptables -L
 (1)chkconfig iptables on
 
 (2)  做成sh写入 开机启动 /etc/rc.localL
+
+
+******************************************************************************
+422  -->  22
+iptables -t nat -A PREROUTING -p tcp -d 192.168.102.37 --dport 422 -j
+DNAT --to 192.168.102.37:22
+
+1. iptables -A INPUT -i eth0 -p tcp --dport 422 -m state --state
+NEW,ESTABLISHED -j ACCEPT
+2. iptables -A OUTPUT -o eth0 -p tcp --sport 422 -m state --state
+ESTABLISHED -j ACCEPT
+
+******************************************************************************
+
+
+
+
+
+
+
+

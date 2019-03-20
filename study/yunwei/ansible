@@ -1,0 +1,17 @@
+安装：
+ yum -y install epel-release
+ yum install ansible
+
+
+配置：
+ vim /etc/ansible/hosts 添加 IP地址或者主机名
+
+配置SSH
+ ssh-keygen
+ ssh-copy-id -i root@192.168.0.109
+ scp .ssh/id_rsa.pub 192.168.0.109:/root/.ssh/authorized_keys
+
+执行命令：
+ ansible all -m 'ping'
+ ansible -m command -a "uptime" 192.168.0.109
+

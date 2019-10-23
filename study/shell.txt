@@ -147,3 +147,8 @@ EOF
 
 (27) 在某一行后面增加要插入的行
 sed -i '/123/a\ppp' a.sh  就是在123的后面增加'ppp'字符串
+
+
+
+() echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_all
+使对方无法ping
